@@ -1,4 +1,4 @@
-name: Manuaalinen Deploy
+name: Manual Deploy
 
 on:
   workflow_dispatch: # Tämä tuo "Run workflow" -napin GitHubiin
