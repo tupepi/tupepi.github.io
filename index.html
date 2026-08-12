@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="header-layer" id="header-layer">
+      <div class="header-backdrop"></div>
+      <div class="header-track">
+        <div class="header-content-inner" id="header-content-inner">
+          <h2 id="header-h2"></h2>
+          <p id="header-p"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="topic-spine" id="topic-spine">
+      <span id="topic-spine-inner"></span>
+    </div>
+
+    <div class="lateral-nav" id="lateral-nav">
+      <div class="hdots" id="hdots-global"></div>
+    </div>
+
+    <div class="viewport" id="viewport">
+      <section class="vsection hero-section" id="v-hero">
+        <h1>Tuukka Pitkänen</h1>
+        <p>
+          Rakennan sovelluksia, infraa ja hyvää musiikkia, itse, alusta loppuun.
+        </p>
+        <div class="hero-hint">
+          <div class="key-cluster">
+            <span class="key key-up">↑</span>
+            <span class="key key-left">←</span>
+            <button
+              class="key key-down"
+              id="hero-down-key"
+              aria-label="Seuraava osio"
+            >
+              ↓
+            </button>
+            <span class="key key-right">→</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="vsection topic-section" id="v-dev" data-label="Kehitys">
+        <div class="hscroll-wrap">
+          <button class="harrow left" data-scroll="dev" data-dir="-1">‹</button>
+          <div class="hscroll" id="hscroll-dev">
+            <div class="hcard-slot">
+              <div class="card">
+                <div class="kicker">Julkaistu</div>
+                <div class="h3-row">
+                  <h3>IoT Temp Pipeline</h3>
+                </div>
+                <ul class="card-bullets">
+                  <li>
+                    <span class="highlight"
+                      >Pää&shy;stä-pää&shy;hän-jär&shy;jes&shy;tel&shy;mä</span
+                    >
+                    par&shy;vek&shy;keen läm&shy;pö&shy;ti&shy;lan
+                    mit&shy;tauk&shy;seen: ESP32-an&shy;tu&shy;ri, oma
+                    back&shy;end, PostgreSQL, React-dash&shy;board
+                    sää&shy;en&shy;nus&shy;te&shy;ver&shy;tai&shy;lul&shy;la.
+                  </li>
+                  <li>
+                    En&shy;sim&shy;mäi&shy;nen kos&shy;ke&shy;tus
+                    IoT-lait&shy;tei&shy;siin.
+                    Tes&shy;ti&shy;pro&shy;jek&shy;ti, jos&shy;ta poh&shy;jat
+                    <span class="highlight"
+                      >i&shy;som&shy;pien i&shy;de&shy;oi&shy;den
+                      to&shy;teut&shy;tam&shy;iseen</span
+                    >.
+                  </li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">ESP32</span><span class="tag">Node.js</span
+                  ><span class="tag">React</span
+                  ><span class="tag">PostgreSQL</span>
+                </div>
+                <a
+                  class="card-link"
+                  href="https://tuukkap.com/iot-temp-pipeline/"
+                  target="_blank"
+                  rel="noopener"
+                  >Live-demo →</a
+                >
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <div class="kicker">Julkaistu</div>
+                <h3>Lukuhullu</h3>
+                <ul class="card-bullets">
+                  <li>
+                    Lu&shy;ku&shy;päi&shy;vä&shy;kir&shy;ja. OpenLibrary ja
+                    Google Books API.
+                    <span class="highlight"
+                      >Jul&shy;ki&shy;nen se&shy;lai&shy;lu
+                      kom&shy;men&shy;teil&shy;la.</span
+                    >
+                  </li>
+                  <li>
+                    Goodreads yms. ei&shy;vät so&shy;pi&shy;neet
+                    vai&shy;mol&shy;le, jo&shy;ten hän käyt&shy;ti vuo&shy;sia
+                    iPhonen
+                    muis&shy;tiin&shy;pa&shy;no&shy;sov&shy;el&shy;lus&shy;ta.
+                    <span class="highlight">Käy&shy;tös&shy;sä</span> myös
+                    lä&shy;hi&shy;pii&shy;ril&shy;lä. E&shy;ten&shy;kin
+                    pi&shy;dän ma&shy;nu&shy;aa&shy;li&shy;ses&shy;ta
+                    pai&shy;nos&shy;ten ni&shy;put&shy;ta&shy;mi&shy;ses&shy;ta
+                    yh&shy;dek&shy;si te&shy;ok&shy;sek&shy;si.
+                  </li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">React</span
+                  ><span class="tag">TypeScript</span
+                  ><span class="tag">Node.js</span
+                  ><span class="tag">PostgreSQL</span>
+                </div>
+                <a
+                  class="card-link"
+                  href="https://lukuhullu.tuukkap.com"
+                  target="_blank"
+                  rel="noopener"
+                  >Kokeile →</a
+                >
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <div class="kicker">Suunnitteluvaihe valmis</div>
+                <h3>ATLAS — autotallin lämmityksen automaatio</h3>
+                <ul class="card-bullets">
+                  <li>
+                    Mi&shy;ta&shy;taan ja sää&shy;de&shy;tään
+                    <span class="highlight"
+                      >au&shy;to&shy;maat&shy;ti&shy;ses&shy;ti</span
+                    >
+                    au&shy;to&shy;tal&shy;lin (bän&shy;dien
+                    tree&shy;ni&shy;kämp&shy;pä ja stu&shy;dio)
+                    läm&shy;pö&shy;ti&shy;laa. Sää&shy;tä&shy;mi&shy;nen
+                    pe&shy;rus&shy;tuu säh&shy;kön hin&shy;nal&shy;le ja
+                    huo&shy;neen läm&shy;pö&shy;ti&shy;lal&shy;le.
+                  </li>
+                  <li>
+                    Jat&shy;koa par&shy;ve&shy;ke-pro&shy;jek&shy;til&shy;le:
+                    <span class="highlight">so&shy;vel&shy;le&shy;taan</span>
+                    o&shy;pit&shy;tu&shy;ja pe&shy;ri&shy;aat&shy;tei&shy;ta
+                    uu&shy;teen on&shy;gel&shy;maan. Käy&shy;te&shy;tään taas
+                    ESP32 ja li&shy;säk&shy;si hyö&shy;dyn&shy;ne&shy;tään
+                    van&shy;haa läp&shy;pä&shy;riä.
+                  </li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">ESP32</span><span class="tag">Docker</span
+                  ><span class="tag">Tailscale</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="harrow right" data-scroll="dev" data-dir="1">›</button>
+        </div>
+      </section>
+
+      <section
+        class="vsection topic-section"
+        id="v-tech"
+        data-label="Muu teknologia"
+      >
+        <div class="hscroll-wrap">
+          <button class="harrow left" data-scroll="tech" data-dir="-1">
+            ‹
+          </button>
+          <div class="hscroll" id="hscroll-tech">
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>Kotipalvelin</h3>
+                <ul class="card-bullets">
+                  <li>
+                    A&shy;luk&shy;si oli vain Raspberry Pi ja me&shy;dian
+                    suo&shy;ra&shy;tois&shy;to&shy;pal&shy;ve&shy;lin.
+                    Sit&shy;ten oli HP EliteDesk ja
+                    <span class="highlight">Docker-stack</span>...
+                  </li>
+                  <li>
+                    Useita kontteja,
+                    3-2-1-var&shy;muus&shy;ko&shy;pio&shy;stra&shy;te&shy;gia,
+                    zero-trust-etä&shy;käyt&shy;tö il&shy;man a&shy;voi&shy;mia
+                    port&shy;te&shy;ja. E&shy;tä&shy;käy&shy;tet&shy;tävä
+                    tal&shy;len&shy;nus&shy;ti&shy;la ja Google Drive
+                    ti&shy;lauk&shy;sen pe&shy;ru&shy;mi&shy;nen oli yksi
+                    <span class="highlight">ta&shy;voit&shy;teis&shy;ta</span>.
+                  </li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">Docker</span
+                  ><span class="tag">Ubuntu Server</span
+                  ><span class="tag">Tailscale</span
+                  ><span class="tag">Nextcloud</span
+                  ><span class="tag">Jellyfin</span>
+                </div>
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>Batocera / vanhan raudan pelastus</h3>
+                <ul class="card-bullets">
+                  <li>
+                    Win10/Win7-tuen lop&shy;pu&shy;mi&shy;nen jät&shy;tää
+                    <span class="highlight"
+                      >käyt&shy;tö&shy;kel&shy;pois&shy;ta rau&shy;taa</span
+                    >
+                    ros&shy;kiin. Pe&shy;las&shy;tet&shy;tu
+                    läp&shy;pä&shy;rei&shy;tä ja
+                    pöy&shy;tä&shy;ko&shy;nei&shy;ta.
+                  </li>
+                  <li>
+                    Emulaattorit toi&shy;mi&shy;vat yl&shy;lät&shy;tä&shy;vän
+                    hy&shy;vin van&shy;hal&shy;la rau&shy;dal&shy;la;
+                    huo&shy;mat&shy;tu mm. et&shy;tä Vulkan API pär&shy;jää
+                    y&shy;lei&shy;ses&shy;ti pa&shy;rem&shy;min kuin
+                    vaih&shy;to&shy;eh&shy;dot.
+                  </li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">Batocera</span><span class="tag">Linux</span
+                  ><span class="tag">Retro</span>
+                </div>
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>Käyttöjärjestelmät</h3>
+                <ul class="card-bullets">
+                  <li>
+                    Windows koko elämän, Linux Mint
+                    päi&shy;vit&shy;täi&shy;se&shy;nä ko&shy;nee&shy;na n.
+                    vuo&shy;den ajan, macOS mu&shy;kaan vuon&shy;na 2026.
+                  </li>
+                  <li>
+                    Pää&shy;pe&shy;li&shy;ko&shy;nee&shy;na täl&shy;lä
+                    het&shy;kel&shy;lä Fedora-poh&shy;jai&shy;nen lai&shy;te.
+                  </li>
+                </ul>
+                <div class="tags">
+                  <span class="tag">Linux</span><span class="tag">macOS</span
+                  ><span class="tag">Fedora</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button class="harrow right" data-scroll="tech" data-dir="1">
+            ›
+          </button>
+        </div>
+      </section>
+
+      <section
+        class="vsection topic-section"
+        id="v-music"
+        data-label="Musiikki"
+      >
+        <div class="hscroll-wrap">
+          <button class="harrow left" data-scroll="music" data-dir="-1">
+            ‹
+          </button>
+          <div class="hscroll" id="hscroll-music">
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>No Use</h3>
+                <ul class="card-bullets">
+                  <li>Metallin genressä.</li>
+                  <li>
+                    <span class="highlight"
+                      >Äänitetty, miksattu ja julkaistu itse.</span
+                    >
+                  </li>
+                </ul>
+                <div class="band-embed">
+                  <iframe
+                    data-testid="embed-iframe"
+                    style="border-radius: 12px"
+                    src="https://open.spotify.com/embed/playlist/3vnvkR6Es1v8GeWiAmJWFJ?utm_source=generator&theme=0&si=f796d9c8527d4251"
+                    width="100%"
+                    height="152"
+                    frameborder="0"
+                    allowfullscreen=""
+                    allow="
+                      autoplay;
+                      clipboard-write;
+                      encrypted-media;
+                      fullscreen;
+                      picture-in-picture;
+                    "
+                    loading="lazy"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>Squealers</h3>
+                <ul class="card-bullets">
+                  <li>Rock'n'roll-genressä.</li>
+                  <li>
+                    <span class="highlight"
+                      >Äänitetty, miksattu ja julkaistu itse.</span
+                    >
+                  </li>
+                </ul>
+                <div class="band-embed">
+                  <iframe
+                    data-testid="embed-iframe"
+                    style="border-radius: 12px"
+                    src="https://open.spotify.com/embed/album/33G8kc6MfbVMmQjSMeRqzt?utm_source=generator&theme=0&si=576dc205308a4deb"
+                    width="100%"
+                    height="152"
+                    frameborder="0"
+                    allowfullscreen=""
+                    allow="
+                      autoplay;
+                      clipboard-write;
+                      encrypted-media;
+                      fullscreen;
+                      picture-in-picture;
+                    "
+                    loading="lazy"
+                  ></iframe>
+                </div>
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>Studiotyö</h3>
+                <ul class="card-bullets">
+                  <li>
+                    <span class="highlight">Yli 30 kappaletta</span>
+                    yh&shy;teis&shy;sä&shy;vel&shy;let&shy;ty (90 %+),
+                    ää&shy;ni&shy;tet&shy;ty, mik&shy;sat&shy;tu ja
+                    jul&shy;kais&shy;tu it&shy;se.
+                  </li>
+                  <li>
+                    <span class="highlight">N. 25 000 streamia</span>
+                    Spotifyssa, ei hit&shy;te&shy;jä, mut&shy;ta pit&shy;kän
+                    työn tu&shy;los&shy;ta. Sa&shy;tun&shy;nai&shy;sia
+                    ää&shy;nit&shy;yk&shy;siä ja mik&shy;sauk&shy;sia myös
+                    muil&shy;le bän&shy;deil&shy;le.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="hcard-slot">
+              <div class="card">
+                <h3>Esiintyminen ja bänditoiminta</h3>
+                <ul class="card-bullets">
+                  <li>Kitaristina keikoilla.</li>
+                  <li>
+                    Lähes kaik&shy;ki o&shy;heis&shy;toi&shy;min&shy;ta
+                    <span class="highlight">hoi&shy;det&shy;tu it&shy;se</span>:
+                    net&shy;ti&shy;si&shy;vut (yk&shy;si raa&shy;ka&shy;na
+                    HTML/CSS:llä), bän&shy;di&shy;pai&shy;dat,
+                    keik&shy;ka&shy;ju&shy;lis&shy;teet,
+                    vi&shy;deo&shy;edi&shy;toin&shy;ti, ka&shy;lus&shy;ton
+                    huo&shy;lto ja ki&shy;ta&shy;roi&shy;den kolvaus.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <button class="harrow right" data-scroll="music" data-dir="1">
+            ›
+          </button>
+        </div>
+      </section>
+
+      <section
+        class="vsection footer-section"
+        id="v-footer"
+        data-label="Yhteystiedot"
+      >
+        <img
+          class="avatar"
+          src="avatar.webp"
+          alt="Tuukka Pitkänen"
+          width="140"
+          height="140"
+          loading="lazy"
+        />
+        <p class="footer-name">Tuukka P.</p>
+        <div>
+          <a href="https://github.com/tupepi">GitHub</a>
+          <a
+            href="https://open.spotify.com/playlist/5vXMc5ngTMxpoUo3UytY83?si=87a4fe9df8fb4be2"
+            >Spotify</a
+          >
+          <a href="mailto:tuukkapitkanen2@gmail.com">Sähköposti</a>
+        </div>
+      </section>
+    </div>
+
+    <nav class="vnav" id="vnav"></nav>
+
+    <nav class="vnav-left" id="vnav-left">
+      <button class="vnav-btn vnav-up" aria-label="Edellinen osio" title="Ylös">
+        ↑
+      </button>
+      <button
+        class="vnav-btn vnav-down"
+        aria-label="Seuraava osio"
+        title="Alas"
+      >
+        ↓
+      </button>
+    </nav>
+
+    <script src="script.js"></script>
+  </body>
+</html>
