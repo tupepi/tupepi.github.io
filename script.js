@@ -1,7 +1,6 @@
 const viewport = document.getElementById("viewport");
 const vsections = Array.from(document.querySelectorAll(".vsection"));
 const vnav = document.getElementById("vnav");
-const vnavLeft = document.getElementById("vnav-left");
 
 // Shared animation core: hand-driven with custom easing curve
 const EASE_OUT_QUAD = (t) => t * (2 - t);
@@ -31,7 +30,7 @@ function animateScroll(el, prop, targetValue, duration, opts) {
   requestAnimationFrame(frame);
 }
 
-const VSCROLL_MS = 950;
+const VSCROLL_MS = 700;
 const VSCROLL_FADE_DIP = 0.5;
 let vNavBusy = false;
 
@@ -52,26 +51,12 @@ function requestVerticalNav(section) {
   });
 }
 
-// Opacity animation with same easing curve
-function animateOpacity(el, targetOpacity, duration, onDone) {
-  const start = parseFloat(el.style.opacity) || (targetOpacity === 0 ? 1 : 0);
-  const startTime = performance.now();
-  function frame(now) {
-    const t = Math.min(1, (now - startTime) / duration);
-    const eased = EASE_OUT_QUAD(t);
-    el.style.opacity = String(start + (targetOpacity - start) * eased);
-    if (t < 1) {
-      requestAnimationFrame(frame);
-    } else if (onDone) {
-      onDone();
-    }
-  }
-  requestAnimationFrame(frame);
-}
-
-// Text-swap fade: if a new value arrives while a fade is already in flight,
-// it's remembered and played once the current one finishes.
+// Text-swap fade: CSS handles the actual opacity interpolation, JS just
+// sequences fade-out -> swap text -> fade-in via transitionend. If a new
+// value arrives while a fade is already in flight, it's remembered and
+// played once the current one finishes.
 function createQueuedFader(el, fadeMs, getShown, applyValue) {
+  el.style.transition = `opacity ${fadeMs}ms`;
   let pending = null;
   let busy = false;
   function request(value) {
@@ -82,18 +67,29 @@ function createQueuedFader(el, fadeMs, getShown, applyValue) {
     if (getShown() === value) return;
     if (!getShown()) {
       applyValue(value); // first-ever reveal: no previous text to fade away from
+      el.style.opacity = "1";
       return;
     }
     busy = true;
-    animateOpacity(el, 0, fadeMs, () => {
-      applyValue(value);
-      animateOpacity(el, 1, fadeMs, () => {
-        busy = false;
-        const next = pending;
-        pending = null;
-        if (next !== null && next !== value) request(next);
-      });
-    });
+    el.style.opacity = "0";
+    el.addEventListener(
+      "transitionend",
+      () => {
+        applyValue(value);
+        el.style.opacity = "1";
+        el.addEventListener(
+          "transitionend",
+          () => {
+            busy = false;
+            const next = pending;
+            pending = null;
+            if (next !== null && next !== value) request(next);
+          },
+          { once: true },
+        );
+      },
+      { once: true },
+    );
   }
   return request;
 }
@@ -140,7 +136,7 @@ const headerCopy = {
   },
   "v-music": {
     h2: "Musiikki",
-    p: "Kaksi bändiä, kaksi genreä, sävellyksestä julkaisuun ja koko oheistoimintaan itse.",
+    p: "Kaksi bändiä, kaksi genreä, sävellyksestä julkaisuun ja koko oheistoimintaan itse. Lisäksi muiden artistien miksaamista.",
   },
 };
 
@@ -234,8 +230,6 @@ function updateActiveVSection() {
     vdots.forEach((d, i) => d.classList.toggle("active", i === activeIdx));
   }
 
-  vnavLeft.classList.toggle("on-hero", vsections[activeIdx].id === "v-hero");
-
   // Update header only during manual scroll (not during explicit nav)
   if (!vNavBusy) {
     const headerLine = viewport.scrollTop + viewport.clientHeight * 0.2;
@@ -261,36 +255,50 @@ window.addEventListener("resize", handleResize);
 
 const carousels = {};
 
-// Horizontal scrollers: infinite-loop carousel via edge clones
+// Horizontal scrollers: bounded carousel, no wraparound
 ["dev", "tech", "music"].forEach((topic) => {
   const hscroll = document.getElementById("hscroll-" + topic);
-  const originals = Array.from(hscroll.querySelectorAll(".hcard-slot"));
-  const total = originals.length;
-
-  // Clone last -> prepend, clone first -> append, so real slides sit at index 1..total
-  const firstClone = originals[0].cloneNode(true);
-  const lastClone = originals[total - 1].cloneNode(true);
-  hscroll.insertBefore(lastClone, originals[0]);
-  hscroll.appendChild(firstClone);
+  const total = hscroll.querySelectorAll(".hcard-slot").length;
 
   // currentIndex is the source of truth for navigation target.
-  let currentIndex = 1; // index 0 is the prepended clone
-  let currentReal = 0;
+  let currentIndex = 0;
   let hScrollAnimating = false;
+
+  function clampIndex(index) {
+    return Math.min(Math.max(index, 0), total - 1);
+  }
+
+  const arrowBtns = Array.from(
+    document.querySelectorAll('.harrow[data-scroll="' + topic + '"]'),
+  );
+
+  // Only the arrow pointing at a reachable card bounces — mirrors the
+  // hero key-cluster, where only the direction you can actually take
+  // (down) animates.
+  function updateArrows() {
+    arrowBtns.forEach((btn) => {
+      const dir = parseInt(btn.dataset.dir, 10);
+      const canMove = dir < 0 ? currentIndex > 0 : currentIndex < total - 1;
+      btn.classList.toggle("bounce", canMove);
+    });
+  }
 
   function goTo(index, smooth) {
     currentIndex = index;
     hscroll.style.scrollBehavior = smooth ? "smooth" : "auto";
     hscroll.scrollLeft = hscroll.clientWidth * index;
     hscroll.style.scrollBehavior = "";
+    updateArrows();
   }
 
   // Slower transition for explicit navigation (arrows, keyboard, dots).
-  const SLIDE_MS = 950;
+  const SLIDE_MS = 700;
   const FADE_DIP = 0.6;
   function goToFade(index) {
-    if (hScrollAnimating) return; // ignore clicks during animation
+    index = clampIndex(index);
+    if (hScrollAnimating || index === currentIndex) return;
     currentIndex = index;
+    updateArrows();
     hScrollAnimating = true;
     animateScroll(
       hscroll,
@@ -306,63 +314,41 @@ const carousels = {};
     );
   }
 
-  function setCount(realIdx) {
-    currentReal = realIdx;
+  function setCount(idx) {
+    currentIndex = idx;
+    updateArrows();
     // Only push a visual update to the shared indicator if this
     // topic is the one currently on screen.
-    if (lateralNavTopic === topic) updateLateralNavState(realIdx);
+    if (lateralNavTopic === topic) updateLateralNavState(idx);
   }
-
-  function silentWrap(targetIndex, realIdx) {
-    clearTimeout(settleTimer);
-    hscroll.style.scrollSnapType = "none";
-    goTo(targetIndex, false);
-    requestAnimationFrame(() => {
-      hscroll.style.scrollSnapType = "";
-    });
-    setCount(realIdx);
-  }
-
-  // Start on the first real slide
-  goTo(1, false);
 
   let settleTimer = null;
   hscroll.addEventListener("scroll", () => {
-    const rawIdx = hscroll.scrollLeft / hscroll.clientWidth;
-    const nearestIdx = Math.round(rawIdx);
-
-    // Live-update while scrolling
-    const liveReal = Math.min(Math.max(nearestIdx - 1, 0), total - 1);
-    setCount(liveReal);
+    const nearestIdx = clampIndex(
+      Math.round(hscroll.scrollLeft / hscroll.clientWidth),
+    );
+    setCount(nearestIdx); // live-update while scrolling
 
     clearTimeout(settleTimer);
     settleTimer = setTimeout(() => {
-      if (hScrollAnimating) return;
-      const idx = Math.round(hscroll.scrollLeft / hscroll.clientWidth);
-      if (idx === 0) {
-        silentWrap(total, total - 1);
-      } else if (idx === total + 1) {
-        silentWrap(1, 0);
-      } else {
-        currentIndex = idx;
-      }
+      if (!hScrollAnimating) currentIndex = nearestIdx;
     }, 120);
   });
 
-  document
-    .querySelectorAll('.harrow[data-scroll="' + topic + '"]')
-    .forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const dir = parseInt(btn.dataset.dir, 10);
-        goToFade(currentIndex + dir);
-      });
+  arrowBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const dir = parseInt(btn.dataset.dir, 10);
+      goToFade(currentIndex + dir);
     });
+  });
+
+  updateArrows(); // initial state, before any scroll/nav event fires
 
   carousels[topic] = {
     total,
     step: (dir) => goToFade(currentIndex + dir),
-    goToReal: (i) => goToFade(i + 1),
-    getCurrentReal: () => currentReal,
+    goToReal: (i) => goToFade(i),
+    getCurrentReal: () => currentIndex,
   };
 
   // Re-sync slide widths on resize (orientation change etc.)
@@ -384,12 +370,13 @@ let wheelCooldown = false;
 viewport.addEventListener(
   "wheel",
   (e) => {
+    if (e.ctrlKey) return; // trackpad pinch-zoom — don't hijack it
     e.preventDefault();
     if (wheelCooldown || Math.abs(e.deltaY) < 2) return;
     wheelCooldown = true;
     setTimeout(() => {
       wheelCooldown = false;
-    }, 900);
+    }, 650);
     if (e.deltaY > 0) {
       goToNextSection();
     } else {
@@ -429,44 +416,8 @@ window.addEventListener("keydown", (e) => {
     carousels[topic].step(e.key === "ArrowRight" ? 1 : -1);
   }
 });
-// Left nav buttons for vertical navigation
-document.querySelectorAll(".vnav-btn").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    if (btn.classList.contains("vnav-up")) {
-      goToPrevSection();
-    } else if (btn.classList.contains("vnav-down")) {
-      goToNextSection();
-    }
-  });
-});
 // Hero's animated down-key button does exactly what ArrowDown,
 // scrolling, or swiping down would do: advance to the next section.
 document
   .getElementById("hero-down-key")
   .addEventListener("click", goToNextSection);
-
-// Info tooltips: click/tap to toggle (not hover-only, so it works on
-// touch devices too), close others when one opens, close on outside click.
-function closeAllTooltips() {
-  document
-    .querySelectorAll(".tooltip-panel.open")
-    .forEach((p) => p.classList.remove("open"));
-  document
-    .querySelectorAll('.info-tip[aria-expanded="true"]')
-    .forEach((b) => b.setAttribute("aria-expanded", "false"));
-}
-
-document.querySelectorAll(".info-tip").forEach((btn) => {
-  const panel = btn.nextElementSibling;
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const isOpen = panel.classList.contains("open");
-    closeAllTooltips();
-    if (!isOpen) {
-      panel.classList.add("open");
-      btn.setAttribute("aria-expanded", "true");
-    }
-  });
-});
-
-document.addEventListener("click", closeAllTooltips);
