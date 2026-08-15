@@ -293,11 +293,41 @@ button.key:hover {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
-  height: 100%;
+  /* Intrinsic, not height: 100% — a single flex line's cross-size
+     naturally settles to its tallest child's content height, which
+     keeps this box (and the scroll-shadow painted on it below) sized to
+     the cards actually in it instead of the full column. .hscroll-wrap's
+     align-items: center then centers this shorter box exactly where the
+     old full-height version was already centering the card, so the
+     on-screen position doesn't move. */
   width: 100%;
   max-width: 560px;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
+  /* Scroll shadow: two solid-to-transparent covers scroll with the
+     content (local) and mask two fixed shadow gradients (scroll), so
+     each edge shadow only shows while there's another card to reach on
+     that side and disappears at the first/last card — driven by the
+     real scroll position, not DOM order. Same trick as .card's vertical
+     fallback further down, just horizontal. rgba(238, 236, 228, *)
+     mirrors --paper; a var() can't carry its own alpha channel here. */
+  background:
+    linear-gradient(to right, var(--paper) 30%, rgba(238, 236, 228, 0)) left /
+      34px 100% local no-repeat,
+    linear-gradient(to left, var(--paper) 30%, rgba(238, 236, 228, 0)) right /
+      34px 100% local no-repeat,
+    radial-gradient(
+        farthest-side at 0 50%,
+        rgba(0, 0, 0, 0.18),
+        rgba(0, 0, 0, 0)
+      )
+      left / 30px 100% scroll no-repeat,
+    radial-gradient(
+        farthest-side at 100% 50%,
+        rgba(0, 0, 0, 0.18),
+        rgba(0, 0, 0, 0)
+      )
+      right / 30px 100% scroll no-repeat;
 }
 
 .hscroll::-webkit-scrollbar {
@@ -741,6 +771,15 @@ button.key:hover {
 }
 
 @media (max-height: 600px) {
+  .hscroll {
+    /* .card's max-height: 100% below needs a definite ancestor height to
+       resolve against — the base rule's intrinsic (content-matched)
+       height is exactly what would let an overflowing card grow this
+       box unbounded instead of clamping it, so pin it back to the full
+       column here, where the point is to cap and internally scroll. */
+    height: 100%;
+  }
+
   .card {
     max-height: 100%;
     overflow-y: auto;
@@ -752,10 +791,10 @@ button.key:hover {
        rgba(238, 236, 228, *) mirrors --paper; a var() can't carry its
        own alpha channel here. */
     background:
-      linear-gradient(var(--paper) 30%, rgba(238, 236, 228, 0)) top / 100%
+      linear-gradient(var(--paper) 30%, rgba(238, 236, 228, 0)) top / 100% 20px
+        local no-repeat,
+      linear-gradient(rgba(238, 236, 228, 0), var(--paper) 70%) bottom / 100%
         20px local no-repeat,
-      linear-gradient(rgba(238, 236, 228, 0), var(--paper) 70%) bottom /
-        100% 20px local no-repeat,
       radial-gradient(
           farthest-side at 50% 0,
           rgba(0, 0, 0, 0.15),
