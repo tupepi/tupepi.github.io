@@ -52,9 +52,14 @@ function requestVerticalNav(section) {
 }
 
 // Text-swap fade: CSS handles the actual opacity interpolation, JS just
-// sequences fade-out -> swap text -> fade-in via transitionend. If a new
-// value arrives while a fade is already in flight, it's remembered and
-// played once the current one finishes.
+// sequences fade-out -> swap text -> fade-in via timers matching fadeMs.
+// If a new value arrives while a fade is already in flight, it's
+// remembered and played once the current one finishes. Timers, not
+// transitionend: a rapid direction reversal (e.g. a mobile swipe that
+// flips back before the fade-out completes) can set opacity to a value
+// it's already animating towards, which some browsers treat as no
+// change and never fire transitionend for — leaving `busy` stuck true
+// forever and the header frozen.
 function createQueuedFader(el, fadeMs, getShown, applyValue) {
   el.style.transition = `opacity ${fadeMs}ms`;
   let pending = null;
@@ -72,24 +77,16 @@ function createQueuedFader(el, fadeMs, getShown, applyValue) {
     }
     busy = true;
     el.style.opacity = "0";
-    el.addEventListener(
-      "transitionend",
-      () => {
-        applyValue(value);
-        el.style.opacity = "1";
-        el.addEventListener(
-          "transitionend",
-          () => {
-            busy = false;
-            const next = pending;
-            pending = null;
-            if (next !== null && next !== value) request(next);
-          },
-          { once: true },
-        );
-      },
-      { once: true },
-    );
+    setTimeout(() => {
+      applyValue(value);
+      el.style.opacity = "1";
+      setTimeout(() => {
+        busy = false;
+        const next = pending;
+        pending = null;
+        if (next !== null && next !== value) request(next);
+      }, fadeMs);
+    }, fadeMs);
   }
   return request;
 }

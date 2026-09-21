@@ -318,13 +318,13 @@ button.key:hover {
       34px 100% local no-repeat,
     radial-gradient(
         farthest-side at 0 50%,
-        rgba(0, 0, 0, 0.18),
+        rgba(0, 0, 0, 0.26),
         rgba(0, 0, 0, 0)
       )
       left / 30px 100% scroll no-repeat,
     radial-gradient(
         farthest-side at 100% 50%,
-        rgba(0, 0, 0, 0.18),
+        rgba(0, 0, 0, 0.26),
         rgba(0, 0, 0, 0)
       )
       right / 30px 100% scroll no-repeat;
@@ -440,13 +440,21 @@ button.key:hover {
   }
 }
 
-@media (min-width: 1100px) {
+/* Above mobile but below the side-by-side breakpoint, the single
+   visible card has the whole screen to itself — let it use more of it
+   than the phone-sized column, without stretching edge to edge. The
+   scroll shadow is dropped here too: once the arrows sit inline beside
+   the card instead of pinned to the screen corners, they already mark
+   the card's edge, so the shadow is redundant clutter right next to
+   them. */
+@media (min-width: 641px) and (max-width: 1399px) {
   .hscroll {
-    max-width: 680px;
+    max-width: min(75vw, 820px);
+    background: none;
   }
 
   .card {
-    max-width: 640px;
+    max-width: 100%;
   }
 }
 
@@ -539,6 +547,20 @@ button.key:hover {
    instead of sitting inline (there's no room beside a full-width card)
    so they stay available as a discoverable, tappable affordance. */
 @media (max-width: 640px) {
+  .hscroll-wrap {
+    /* Arrows go position: fixed below, so this padding was only ever
+       holding space for them — left in place it strands a strip of
+       paper between the scroll shadow and the real screen edge. */
+    padding: 0;
+  }
+
+  .hscroll {
+    /* The base 560px cap leaves the same kind of gap once a phone gets
+       wider than that (e.g. 560–640px) — the shadow ends up short of
+       the real screen edge again despite the wrap padding above. */
+    max-width: none;
+  }
+
   .harrow {
     position: fixed;
     /* .vsection (this button's containing block, via its own
