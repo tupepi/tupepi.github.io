@@ -272,23 +272,6 @@ button.key:hover {
   padding: 0 8px;
 }
 
-/* Bias the centered card upward on mobile. Tiered by height, not a flat
-   value: the tallest card (ATLAS, two long bullets) already nearly fills
-   the available space on short phones, so pushing it up too far shoves
-   its title behind the fixed header — verified per-tier below with that
-   card as the worst case. */
-@media (max-width: 640px) and (min-height: 720px) {
-  .hscroll-wrap {
-    padding-bottom: 12vh;
-  }
-}
-
-@media (max-width: 640px) and (min-height: 641px) and (max-height: 719px) {
-  .hscroll-wrap {
-    padding-bottom: 5vh;
-  }
-}
-
 .hscroll {
   display: flex;
   overflow-x: auto;
@@ -554,6 +537,22 @@ button.key:hover {
        holding space for them — left in place it strands a strip of
        paper between the scroll shadow and the real screen edge. */
     padding: 0;
+    /* Anchor the card near the top of the available space instead of
+       true-centering it: centering left a lot of dead air above short
+       cards on tall phones (the row's height matches the topic's
+       tallest card, so a short card floated in the middle of that
+       tall, mostly-empty row). Rather than a flat guessed px value,
+       the offset is a share of this box's own height — which is
+       exactly (100vh - header - .vsection's own top/bottom padding),
+       the same arithmetic the header and .vsection padding-top already
+       use, just carried one step further instead of hand-tuned per
+       height tier. max() only guards the empty sliver left once
+       --header-h grows in the landscape override further down. */
+    align-items: flex-start;
+    padding-top: max(
+      12px,
+      calc((100vh - var(--header-top) - var(--header-h) - 52px) * 0.1)
+    );
   }
 
   .hscroll {
