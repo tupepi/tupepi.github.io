@@ -33,7 +33,7 @@
 }
 
 :root {
-  --paper: #eeece4;
+  --paper: #f7f6f2;
   --ink: #000000;
   --ink-dim: #5c5a54;
   --rule: #1f1e1b;
@@ -309,12 +309,12 @@ button.key:hover {
      each edge shadow only shows while there's another card to reach on
      that side and disappears at the first/last card — driven by the
      real scroll position, not DOM order. Same trick as .card's vertical
-     fallback further down, just horizontal. rgba(238, 236, 228, *)
+     fallback further down, just horizontal. rgba(247, 246, 242, *)
      mirrors --paper; a var() can't carry its own alpha channel here. */
   background:
-    linear-gradient(to right, var(--paper) 30%, rgba(238, 236, 228, 0)) left /
+    linear-gradient(to right, var(--paper) 30%, rgba(247, 246, 242, 0)) left /
       34px 100% local no-repeat,
-    linear-gradient(to left, var(--paper) 30%, rgba(238, 236, 228, 0)) right /
+    linear-gradient(to left, var(--paper) 30%, rgba(247, 246, 242, 0)) right /
       34px 100% local no-repeat,
     radial-gradient(
         farthest-side at 0 50%,
@@ -788,12 +788,12 @@ button.key:hover {
        content (local) and mask two fixed shadow gradients (scroll) —
        so each shadow only shows while there's more of the card left to
        scroll past on that side, and disappears at the start/end.
-       rgba(238, 236, 228, *) mirrors --paper; a var() can't carry its
+       rgba(247, 246, 242, *) mirrors --paper; a var() can't carry its
        own alpha channel here. */
     background:
-      linear-gradient(var(--paper) 30%, rgba(238, 236, 228, 0)) top / 100% 20px
+      linear-gradient(var(--paper) 30%, rgba(247, 246, 242, 0)) top / 100% 20px
         local no-repeat,
-      linear-gradient(rgba(238, 236, 228, 0), var(--paper) 70%) bottom / 100%
+      linear-gradient(rgba(247, 246, 242, 0), var(--paper) 70%) bottom / 100%
         20px local no-repeat,
       radial-gradient(
           farthest-side at 50% 0,
