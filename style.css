@@ -450,6 +450,7 @@ button.key:hover {
   }
 }
 
+
 .demo-credentials {
   font-size: 0.85rem;
   color: var(--ink-dim);
@@ -557,6 +558,39 @@ button.key:hover {
 
   .harrow.right {
     right: 18px;
+  }
+}
+
+/* ---- Experiment: show every card side by side instead of one at a
+   time — only where there's room for the whole row without cramping
+   it. Arrows/snap become moot once nothing needs paging through. Placed
+   after the base .harrow rules (which set display: flex) so this
+   override actually wins the cascade. ---- */
+@media (min-width: 1400px) {
+  .hscroll-wrap {
+    gap: 48px;
+  }
+
+  .hscroll {
+    max-width: 1800px;
+    overflow: visible;
+    scroll-snap-type: none;
+    background: none;
+  }
+
+  .hcard-slot {
+    flex: 1 1 0;
+    scroll-snap-align: none;
+    padding: 0 28px;
+    align-items: stretch;
+  }
+
+  .card {
+    max-width: none;
+  }
+
+  .harrow {
+    display: none;
   }
 }
 
