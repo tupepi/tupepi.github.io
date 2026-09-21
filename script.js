@@ -125,7 +125,7 @@ const topicNames = {
 const headerCopy = {
   "v-dev": {
     h2: "Kehitys",
-    p: "Kokonaisia projekteja, ei kokeiluja. Rakenna itse, ymmärrä, hio.",
+    p: "Kokonaisia projekteja, ei kokeiluja. Rakennan itse, ymmärrän, hion.",
   },
   "v-tech": {
     h2: "Muu teknologia",
