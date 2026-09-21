@@ -199,24 +199,24 @@ body {
 
 .key-cluster {
   display: grid;
-  grid-template-columns: repeat(3, 34px);
-  grid-template-rows: repeat(2, 34px);
+  grid-template-columns: repeat(3, 44px);
+  grid-template-rows: repeat(2, 44px);
   grid-template-areas:
     ". up ."
     "left down right";
-  row-gap: 4px;
-  column-gap: 4px;
+  row-gap: 6px;
+  column-gap: 6px;
 }
 
 .key {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   color: var(--ink-dim);
   opacity: 0.4;
   border: 1.5px solid var(--rule-faint);
-  border-radius: 7px;
+  border-radius: 9px;
   background: none;
   font-family: Georgia, serif;
   padding: 0;
@@ -244,7 +244,7 @@ button.key:hover {
 
 .key-down {
   grid-area: down;
-  font-size: 1.3rem;
+  font-size: 1.6rem;
   opacity: 1;
   border-color: var(--ink);
   animation: keytap 1s ease-in-out infinite;
@@ -666,8 +666,8 @@ button.key:hover {
 }
 
 .avatar {
-  width: 140px;
-  height: 140px;
+  width: 180px;
+  height: 180px;
   border-radius: 50%;
   object-fit: cover;
   margin: 0 auto 22px;
@@ -685,7 +685,7 @@ button.key:hover {
   color: var(--ink);
   text-decoration: none;
   margin: 0 10px;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   border-bottom: 1px solid var(--ink);
 }
 
